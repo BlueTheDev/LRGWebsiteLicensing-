@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LRG | Lumina Retail Group</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -499,6 +501,21 @@ footer { background: var(--surf); border-top: 1px solid var(--bdr); padding: 2re
 <div id="toasts"></div>
 
 <script>
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyB3q6q8q8q8q8q8q8q8q8q8q8q8q8q8q8",
+  authDomain: "lrg-community-polls.firebaseapp.com",
+  databaseURL: "https://lrg-community-polls-default-rtdb.firebaseio.com",
+  projectId: "lrg-community-polls",
+  storageBucket: "lrg-community-polls.firebasestorage.app",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef1234567890"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
 // Discord OAuth
 const DISCORD_CLIENT_ID = '1485946422942765056';
 const REDIRECT_URI = encodeURIComponent(window.location.origin + '/');
@@ -556,14 +573,14 @@ async function handleOAuthCallback() {
 }
 
 // App State
-const SK = 'lrg_s3', LK = 'lrg_l3', CK = 'lrg_c3', UK = 'lrg_user_profile', PV = 'lrg_poll_votes';
+const SK = 'lrg_s3', LK = 'lrg_l3', CK = 'lrg_c3', UK = 'lrg_user_profile';
 let user = null;
 const PRODS = [
   { id:'basic', badge:'Starter', name:'Basic Bundle', desc:'Everything a new developer needs.', feats:['All Basic Assets','Full Documentation','Priority Support','Lifetime Updates'], url:'https://www.roblox.com/game-pass/1631741299' },
   { id:'restaurant', badge:'Bundle', name:'Restaurant Bundle', desc:'Complete restaurant setup.', feats:['Kitchen Equipment','Food Items','Serving Systems','Cooking Mechanics'], url:'https://www.roblox.com/game-pass/1631361299' }
 ];
 
-// Poll System
+// Poll System with Firebase
 const POLL_OPTIONS = [
   { id: 'nametag', label: 'Make a Nametag System' },
   { id: 'free_products', label: 'Make more free products' },
@@ -571,27 +588,54 @@ const POLL_OPTIONS = [
   { id: 'other', label: 'Something else (Tell us in discord by opening Ticket)' }
 ];
 
-function getPollVotes() { return JSON.parse(localStorage.getItem(PV) || '{}'); }
-function savePollVotes(votes) { localStorage.setItem(PV, JSON.stringify(votes)); }
-function getUserVote() { if (!user) return null; const votes = getPollVotes(); return votes[user.uid] || null; }
-function hasUserVoted() { return getUserVote() !== null; }
-function castVote(optionId) {
+let pollData = { counts: {}, total: 0, userVote: null };
+let selectedPollOption = null;
+
+async function loadPollData() {
+  if (!user) return;
+  
+  // Get vote counts from Firebase
+  const countsRef = database.ref('poll_counts');
+  const snapshot = await countsRef.once('value');
+  const counts = snapshot.val() || {};
+  
+  // Get user's vote
+  const userVoteRef = database.ref(`user_votes/${user.uid}`);
+  const userSnapshot = await userVoteRef.once('value');
+  const userVote = userSnapshot.val();
+  
+  pollData = {
+    counts: counts,
+    total: Object.values(counts).reduce((a,b) => a + (b || 0), 0),
+    userVote: userVote
+  };
+}
+
+async function castVoteFirebase(optionId) {
   if (!user) { toast('Please sign in to vote', 'error'); return false; }
-  if (hasUserVoted()) { toast('You have already voted', 'error'); return false; }
-  const votes = getPollVotes();
-  votes[user.uid] = optionId;
-  savePollVotes(votes);
-  toast('Your vote has been recorded!', 'success');
-  return true;
+  if (pollData.userVote) { toast('You have already voted', 'error'); return false; }
+  
+  try {
+    // Update vote counts in Firebase
+    const countsRef = database.ref(`poll_counts/${optionId}`);
+    await countsRef.transaction(current => (current || 0) + 1);
+    
+    // Save user's vote
+    await database.ref(`user_votes/${user.uid}`).set(optionId);
+    
+    // Update local data
+    pollData.userVote = optionId;
+    pollData.counts[optionId] = (pollData.counts[optionId] || 0) + 1;
+    pollData.total++;
+    
+    toast('Your vote has been recorded!', 'success');
+    return true;
+  } catch (error) {
+    console.error('Vote error:', error);
+    toast('Failed to record vote. Please try again.', 'error');
+    return false;
+  }
 }
-function getVoteCounts() {
-  const votes = getPollVotes();
-  const counts = {};
-  POLL_OPTIONS.forEach(opt => counts[opt.id] = 0);
-  Object.values(votes).forEach(optId => { if (counts[optId] !== undefined) counts[optId]++; });
-  return counts;
-}
-function getTotalVotes() { return Object.values(getVoteCounts()).reduce((a,b) => a + b, 0); }
 
 function showCookieBanner() { if (!localStorage.getItem(CK)) document.getElementById('cookieBanner').classList.add('show'); }
 function acceptCookies() { localStorage.setItem(CK,'accepted'); document.getElementById('cookieBanner').classList.remove('show'); }
@@ -623,7 +667,6 @@ function updNav() {
 function onAuth() { user ? openPanel() : go('login'); }
 
 function getUserProfile() { return JSON.parse(localStorage.getItem(UK) || '{}'); }
-function saveUserProfile(profile) { localStorage.setItem(UK, JSON.stringify(profile)); }
 
 function renderProds() {
   document.getElementById('prodGrid').innerHTML = PRODS.map(p => `<div class="p-card"><div class="p-label">${p.badge}</div><h3>${p.name}</h3><p class="p-desc">${p.desc}</p><ul class="p-feats">${p.feats.map(f=>`<li>${f}</li>`).join('')}</ul><button class="buy-btn" onclick="doBuy('${p.id}')">Purchase</button></div>`).join('');
@@ -634,16 +677,18 @@ let dashTabName = 'profile';
 function renderDash() {
   if (!user) { go('login'); return; }
   document.getElementById('dashProfile').innerHTML = `<div class="dash-av" style="background:${user.color||'#2563eb'}">${user.username[0]}</div><div><div class="dash-name">${user.username}</div><div class="dash-tag">#${user.disc||'0000'}</div></div>`;
-  renderDashTab(dashTabName);
+  loadPollData().then(() => renderDashTab(dashTabName));
 }
 function dashTab(name, btn) {
   dashTabName = name;
   document.querySelectorAll('.dash-nav-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  renderDashTab(name);
+  if (name === 'community') {
+    loadPollData().then(() => renderDashTab(name));
+  } else {
+    renderDashTab(name);
+  }
 }
-
-let selectedPollOption = null;
 
 function renderDashTab(name) {
   const el = document.getElementById('dashMain');
@@ -655,26 +700,24 @@ function renderDashTab(name) {
       <div class="profile-field"><div class="field-label">Discord</div><div class="field-value">${user.username}#${user.disc||'0000'}</div></div>
       <div class="profile-field"><div class="field-label">User ID</div><div class="field-value">${user.uid}</div></div>
       <div class="profile-field"><div class="field-label">Bio</div><div class="field-value">${profile.bio || '<span style="color:var(--muted);">Not set</span>'}</div></div>
-      <div class="profile-field"><div class="field-label">Location</div><div class="field-value">${profile.location || '<span style="color:var(--muted);">Not set</span>'}</div></div>
       <div class="profile-field"><div class="field-label">Member Since</div><div class="field-value">${new Date().toLocaleDateString()}</div></div>
     </div>`;
   } else if (name === 'licenses') {
     el.innerHTML = `<div class="licenses-section"><h3>Licenses</h3><div class="no-lic"><p>You don't own any products yet.</p><button class="btn-primary" onclick="go('products')">Browse Products</button></div></div>`;
   } else if (name === 'community') {
-    const counts = getVoteCounts();
-    const total = getTotalVotes();
-    const userVote = getUserVote();
-    const hasVoted = userVote !== null;
+    const hasVoted = pollData.userVote !== null;
+    const counts = pollData.counts;
+    const total = pollData.total;
     
     let pollHTML = `<div class="community-card"><h3>Community Poll</h3><div class="card-sub">What do you guys want to see at LRG?</div>`;
     POLL_OPTIONS.forEach(opt => {
-      const voteCount = counts[opt.id];
+      const voteCount = counts[opt.id] || 0;
       const percentage = total > 0 ? Math.round((voteCount / total) * 100) : 0;
       pollHTML += `
         <div class="poll-option">
           <div class="poll-option-header">
             <label class="poll-option-label">
-              <input type="radio" name="poll" value="${opt.id}" ${hasVoted ? 'disabled' : ''} ${userVote === opt.id ? 'checked' : ''} onchange="selectedPollOption = '${opt.id}'">
+              <input type="radio" name="poll" value="${opt.id}" ${hasVoted ? 'disabled' : ''} ${pollData.userVote === opt.id ? 'checked' : ''} onchange="selectedPollOption = '${opt.id}'">
               <span>${opt.label}</span>
             </label>
             <span class="poll-percentage">${voteCount} votes (${percentage}%)</span>
@@ -686,7 +729,7 @@ function renderDashTab(name) {
     if (!hasVoted) {
       pollHTML += `<button class="poll-vote-btn" onclick="submitVote()">Submit Vote</button>`;
     } else {
-      pollHTML += `<div class="poll-result-status">✓ You voted for: ${POLL_OPTIONS.find(o => o.id === userVote)?.label || userVote}</div>`;
+      pollHTML += `<div class="poll-result-status">✓ You voted for: ${POLL_OPTIONS.find(o => o.id === pollData.userVote)?.label || pollData.userVote}</div>`;
     }
     pollHTML += `<div class="poll-total-votes">${total} total votes cast</div></div>`;
     
@@ -714,13 +757,15 @@ function renderDashTab(name) {
   }
 }
 
-window.submitVote = function() {
+window.submitVote = async function() {
   if (!selectedPollOption) {
     toast('Please select an option', 'error');
     return;
   }
-  if (castVote(selectedPollOption)) {
+  const success = await castVoteFirebase(selectedPollOption);
+  if (success) {
     selectedPollOption = null;
+    await loadPollData();
     renderDashTab('community');
   }
 };
@@ -745,7 +790,7 @@ function ovClick(e) { if (e.target === document.getElementById('ov')) closeModal
 function openPanel() { setBody(`<h3>Account</h3><div style="display:flex;gap:12px;margin-bottom:1rem;"><div style="width:48px;height:48px;border-radius:50%;background:${user.color||'#2563eb'};display:flex;align-items:center;justify-content:center;font-weight:700;">${user.username[0]}</div><div><div style="font-weight:600;">${user.username}</div><div style="font-size:0.7rem;color:var(--sub);">#${user.disc||'0000'}</div></div></div><div class="m-act-row"><button class="m-act" onclick="requireAuth('dashboard');closeModal()">Dashboard</button><button class="m-act danger" onclick="doLogout()">Sign Out</button></div>`); openModal(); }
 function doLogout() { clearSess(); closeModal(); toast('Signed out', 'info'); go('home'); }
 function openTOS() { setBody(`<h3>Terms of Service</h3><p class="msub">Effective March 21, 2026</p><div class="tos-scroll"><p>By using our Services you agree to these terms.</p><h5>1. Account Responsibility</h5><p>You are solely responsible for your account.</p><h5>2. Refunds</h5><p>No refunds are offered.</p><h5>3. Blacklisting</h5><p>We reserve the right to blacklist users without refund.</p><h5>4. Reverse Engineering</h5><p>Do not reverse engineer, leak, or modify our source code.</p><h5>5. Copyright</h5><p>Copying our Services or trademarks is not permitted.</p></div>`); openModal(); }
-function openPrivacy() { setBody(`<h3>Privacy Policy</h3><p class="msub">Last updated: March 2026</p><div class="tos-scroll"><p>Lumina Retail Group is committed to protecting your privacy.</p><h5>What we collect</h5><p>Discord username and ID when you log in. Profile information you provide.</p><h5>How we use it</h5><p>To provide login and dashboard features. We never sell your data.</p><h5>Storage</h5><p>Data is stored in your browser's localStorage.</p></div>`); openModal(); }
+function openPrivacy() { setBody(`<h3>Privacy Policy</h3><p class="msub">Last updated: March 2026</p><div class="tos-scroll"><p>Lumina Retail Group is committed to protecting your privacy.</p><h5>What we collect</h5><p>Discord username and ID when you log in. Profile information you provide.</p><h5>How we use it</h5><p>To provide login and dashboard features. We never sell your data.</p><h5>Storage</h5><p>Data is stored in Firebase Realtime Database and browser localStorage.</p></div>`); openModal(); }
 function toast(msg, type = 'info') { const c = document.getElementById('toasts'); const t = document.createElement('div'); t.className = 'tst ' + type; t.textContent = msg; c.appendChild(t); requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show'))); setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2800); }
 
 // Load saved theme
