@@ -348,28 +348,6 @@ nav {
   font-size: 0.85rem;
   color: var(--text);
 }
-.edit-btn, .save-btn {
-  background: transparent;
-  border: 1px solid var(--bdr);
-  border-radius: 6px;
-  padding: 0.3rem 0.7rem;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--sub);
-  cursor: pointer;
-  transition: all 0.15s;
-  margin-left: 0.5rem;
-}
-.edit-btn:hover, .save-btn:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-}
-.save-btn {
-  background: var(--blue);
-  border-color: var(--blue);
-  color: white;
-}
-.save-btn:hover { background: var(--blue-d); }
 .badge {
   display: inline-block;
   padding: 0.2rem 0.6rem;
@@ -381,11 +359,6 @@ nav {
   background: rgba(34,197,94,0.1);
   color: #4ade80;
   border: 1px solid rgba(34,197,94,0.2);
-}
-.badge-warning {
-  background: rgba(245,158,11,0.1);
-  color: #fbbf24;
-  border: 1px solid rgba(245,158,11,0.2);
 }
 .setting-item {
   display: flex;
@@ -425,32 +398,25 @@ nav {
 }
 input:checked + .toggle-slider { background-color: var(--blue); }
 input:checked + .toggle-slider:before { transform: translateX(20px); }
-.roblox-input-group {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
-.roblox-input {
-  flex: 1;
-  background: var(--bg);
-  border: 1px solid var(--bdr);
-  border-radius: 8px;
-  padding: 0.6rem 1rem;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 0.85rem;
-}
-.btn-roblox {
-  background: var(--roblox);
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-}
 .no-lic { text-align: center; padding: 2rem; }
 .no-lic p { color: var(--sub); margin-bottom: 1rem; }
+
+.m-act-row { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.m-act {
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--bdr);
+  border-radius: 8px;
+  color: var(--sub);
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.m-act:hover { border-color: var(--bdr-h); color: var(--text); }
+.m-act.danger { border-color: rgba(239,68,68,0.2); color: #f87171; }
+.m-act.danger:hover { background: rgba(239,68,68,0.05); border-color: rgba(239,68,68,0.4); }
 
 #page-login { position: fixed; inset: 0; z-index: 300; display: none; }
 #page-login.active { display: grid; grid-template-columns: 1fr 400px; }
@@ -473,9 +439,12 @@ input:checked + .toggle-slider:before { transform: translateX(20px); }
 
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 500; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.15s; }
 .overlay.open { opacity: 1; visibility: visible; }
-.modal { background: var(--card); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.5rem; width: 100%; max-width: 400px; }
-.modal-x { position: absolute; top: 1rem; right: 1rem; background: none; border: 1px solid var(--bdr); color: var(--sub); cursor: pointer; width: 28px; height: 28px; border-radius: 6px; }
-.tos-scroll { max-height: 320px; overflow-y: auto; }
+.modal { background: var(--card); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.5rem; width: 100%; max-width: 400px; position: relative; }
+.modal-x { position: absolute; top: 1rem; right: 1rem; background: none; border: 1px solid var(--bdr); color: var(--sub); cursor: pointer; width: 28px; height: 28px; border-radius: 6px; font-size: 0.8rem; }
+.modal-x:hover { border-color: var(--blue); color: var(--blue); }
+.tos-scroll { max-height: 320px; overflow-y: auto; padding-right: 4px; }
+.tos-scroll h5 { font-size: 0.8rem; font-weight: 600; color: #60a5fa; margin: 1rem 0 0.25rem; }
+.tos-scroll p { font-size: 0.79rem; color: var(--sub); line-height: 1.65; }
 
 #toasts { position: fixed; bottom: 1.2rem; right: 1.2rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.45rem; }
 .tst { padding: 0.7rem 1rem; background: var(--card); border: 1px solid var(--bdr); border-left-width: 3px; border-radius: 8px; font-size: 0.8rem; transform: translateX(110%); opacity: 0; transition: transform 0.25s, opacity 0.25s; }
@@ -491,8 +460,11 @@ footer { background: var(--surf); border-top: 1px solid var(--bdr); padding: 2re
 .foot-col h6 { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; color: var(--text); margin-bottom: 0.7rem; }
 .foot-col ul li { margin-bottom: 0.4rem; }
 .foot-col ul li a { font-size: 0.75rem; color: var(--sub); text-decoration: none; cursor: pointer; }
+.foot-col ul li a:hover { color: var(--text); }
 .foot-bot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--bdr); padding-top: 1.2rem; margin-top: 1.5rem; }
 .foot-copy { font-size: 0.7rem; color: var(--muted); }
+.foot-lnks { display: flex; gap: 1rem; }
+.foot-lnks a { font-size: 0.7rem; color: var(--muted); text-decoration: none; cursor: pointer; }
 
 .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--bdr); padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; transform: translateY(100%); transition: transform 0.3s; z-index: 1000; }
 .cookie-banner.show { transform: translateY(0); }
@@ -599,20 +571,10 @@ const POLL_OPTIONS = [
   { id: 'other', label: 'Something else (Tell us in discord by opening Ticket)' }
 ];
 
-function getPollVotes() {
-  return JSON.parse(localStorage.getItem(PV) || '{}');
-}
-function savePollVotes(votes) {
-  localStorage.setItem(PV, JSON.stringify(votes));
-}
-function getUserVote() {
-  if (!user) return null;
-  const votes = getPollVotes();
-  return votes[user.uid] || null;
-}
-function hasUserVoted() {
-  return getUserVote() !== null;
-}
+function getPollVotes() { return JSON.parse(localStorage.getItem(PV) || '{}'); }
+function savePollVotes(votes) { localStorage.setItem(PV, JSON.stringify(votes)); }
+function getUserVote() { if (!user) return null; const votes = getPollVotes(); return votes[user.uid] || null; }
+function hasUserVoted() { return getUserVote() !== null; }
 function castVote(optionId) {
   if (!user) { toast('Please sign in to vote', 'error'); return false; }
   if (hasUserVoted()) { toast('You have already voted', 'error'); return false; }
@@ -629,9 +591,7 @@ function getVoteCounts() {
   Object.values(votes).forEach(optId => { if (counts[optId] !== undefined) counts[optId]++; });
   return counts;
 }
-function getTotalVotes() {
-  return Object.values(getVoteCounts()).reduce((a,b) => a + b, 0);
-}
+function getTotalVotes() { return Object.values(getVoteCounts()).reduce((a,b) => a + b, 0); }
 
 function showCookieBanner() { if (!localStorage.getItem(CK)) document.getElementById('cookieBanner').classList.add('show'); }
 function acceptCookies() { localStorage.setItem(CK,'accepted'); document.getElementById('cookieBanner').classList.remove('show'); }
@@ -683,6 +643,8 @@ function dashTab(name, btn) {
   renderDashTab(name);
 }
 
+let selectedPollOption = null;
+
 function renderDashTab(name) {
   const el = document.getElementById('dashMain');
   const profile = getUserProfile();
@@ -708,12 +670,11 @@ function renderDashTab(name) {
     POLL_OPTIONS.forEach(opt => {
       const voteCount = counts[opt.id];
       const percentage = total > 0 ? Math.round((voteCount / total) * 100) : 0;
-      const isSelected = userVote === opt.id;
       pollHTML += `
         <div class="poll-option">
           <div class="poll-option-header">
             <label class="poll-option-label">
-              <input type="radio" name="poll" value="${opt.id}" ${hasVoted ? 'disabled' : ''} ${isSelected ? 'checked' : ''} onchange="if(!hasVoted) document.getElementById('selectedPollOption').value='${opt.id}'">
+              <input type="radio" name="poll" value="${opt.id}" ${hasVoted ? 'disabled' : ''} ${userVote === opt.id ? 'checked' : ''} onchange="selectedPollOption = '${opt.id}'">
               <span>${opt.label}</span>
             </label>
             <span class="poll-percentage">${voteCount} votes (${percentage}%)</span>
@@ -722,7 +683,6 @@ function renderDashTab(name) {
         </div>
       `;
     });
-    pollHTML += `<input type="hidden" id="selectedPollOption" value="">`;
     if (!hasVoted) {
       pollHTML += `<button class="poll-vote-btn" onclick="submitVote()">Submit Vote</button>`;
     } else {
@@ -734,7 +694,7 @@ function renderDashTab(name) {
       <div class="dash-main-grid">
         <div class="community-card">
           <h3>Discord Community</h3>
-          <div class="card-sub">Connect with 8,000+ members</div>
+          <div class="card-sub">Connect with 70+ members</div>
           <a href="https://discord.gg/mrxmDBv3nJ" target="_blank" class="discord-btn">
             <svg width="18" height="14" viewBox="0 0 24 18" fill="currentColor"><path d="M20.317 1.492a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 1.492a.07.07 0 00-.032.027C.533 5.968-.32 10.316.099 14.62a.082.082 0 00.031.056 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.029z"/></svg>
             Join our Discord Server
@@ -749,23 +709,27 @@ function renderDashTab(name) {
     el.innerHTML = `<div class="settings-section"><h3>Preferences</h3>
       <div class="setting-item"><div><div class="setting-label">Dark / Light Mode</div><div class="setting-desc">Toggle between dark and light theme</div></div><div class="setting-control"><label class="toggle-switch"><input type="checkbox" id="themeToggle" ${settings.theme === 'light' ? 'checked' : ''} onchange="toggleTheme(this.checked)"><span class="toggle-slider"></span></label></div></div>
       <div class="setting-item"><div><div class="setting-label">Notifications</div><div class="setting-desc">Receive important updates</div></div><div class="setting-control"><label class="toggle-switch"><input type="checkbox" id="notifToggle" ${settings.notifications ? 'checked' : ''} onchange="saveSetting('notifications', this.checked)"><span class="toggle-slider"></span></label></div></div>
-      <div class="m-act-row" style="margin-top:1.5rem;"><button class="m-act" onclick="openTOS()">Terms of Service</button><button class="m-act" onclick="openPrivacy()">Privacy Policy</button><button class="m-act danger" onclick="doLogout()">Sign Out</button></div>
+      <div class="m-act-row"><button class="m-act" onclick="openTOS()">Terms of Service</button><button class="m-act" onclick="openPrivacy()">Privacy Policy</button><button class="m-act danger" onclick="doLogout()">Sign Out</button></div>
     </div>`;
   }
 }
 
 window.submitVote = function() {
-  const selected = document.getElementById('selectedPollOption')?.value;
-  if (!selected) { toast('Please select an option', 'error'); return; }
-  if (castVote(selected)) {
+  if (!selectedPollOption) {
+    toast('Please select an option', 'error');
+    return;
+  }
+  if (castVote(selectedPollOption)) {
+    selectedPollOption = null;
     renderDashTab('community');
   }
 };
-window.hasVoted = function() { return getUserVote() !== null; };
 window.toggleTheme = function(isLight) {
   const theme = isLight ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('lrg_settings', JSON.stringify({...JSON.parse(localStorage.getItem('lrg_settings') || '{}'), theme: theme}));
+  const settings = JSON.parse(localStorage.getItem('lrg_settings') || '{"theme":"dark","notifications":true}');
+  settings.theme = theme;
+  localStorage.setItem('lrg_settings', JSON.stringify(settings));
 };
 window.saveSetting = function(key, value) {
   const settings = JSON.parse(localStorage.getItem('lrg_settings') || '{"theme":"dark","notifications":true}');
@@ -778,10 +742,10 @@ function setBody(h) { document.getElementById('mbody').innerHTML = h; }
 function openModal() { document.getElementById('ov').classList.add('open'); document.body.style.overflow = 'hidden'; }
 function closeModal() { document.getElementById('ov').classList.remove('open'); document.body.style.overflow = ''; }
 function ovClick(e) { if (e.target === document.getElementById('ov')) closeModal(); }
-function openPanel() { setBody(`<h3>Account</h3><div class="u-strip" style="display:flex;gap:12px;"><div style="width:48px;height:48px;border-radius:50%;background:${user.color||'#2563eb'};display:flex;align-items:center;justify-content:center;">${user.username[0]}</div><div><div style="font-weight:600;">${user.username}</div><div style="font-size:0.7rem;color:var(--sub);">#${user.disc||'0000'}</div></div></div><div class="m-act-row"><button class="m-act" onclick="requireAuth('dashboard');closeModal()">Dashboard</button><button class="m-act danger" onclick="doLogout()">Sign Out</button></div>`); openModal(); }
+function openPanel() { setBody(`<h3>Account</h3><div style="display:flex;gap:12px;margin-bottom:1rem;"><div style="width:48px;height:48px;border-radius:50%;background:${user.color||'#2563eb'};display:flex;align-items:center;justify-content:center;font-weight:700;">${user.username[0]}</div><div><div style="font-weight:600;">${user.username}</div><div style="font-size:0.7rem;color:var(--sub);">#${user.disc||'0000'}</div></div></div><div class="m-act-row"><button class="m-act" onclick="requireAuth('dashboard');closeModal()">Dashboard</button><button class="m-act danger" onclick="doLogout()">Sign Out</button></div>`); openModal(); }
 function doLogout() { clearSess(); closeModal(); toast('Signed out', 'info'); go('home'); }
-function openTOS() { setBody(`<h3>Terms of Service</h3><div class="tos-scroll"><p>By using our Services you agree to these terms.</p><h5>1. Account Responsibility</h5><p>You are solely responsible for your account.</p><h5>2. Refunds</h5><p>No refunds are offered.</p></div>`); openModal(); }
-function openPrivacy() { setBody(`<h3>Privacy Policy</h3><div class="tos-scroll"><p>We never sell your data. Data is stored in localStorage.</p></div>`); openModal(); }
+function openTOS() { setBody(`<h3>Terms of Service</h3><p class="msub">Effective March 21, 2026</p><div class="tos-scroll"><p>By using our Services you agree to these terms.</p><h5>1. Account Responsibility</h5><p>You are solely responsible for your account.</p><h5>2. Refunds</h5><p>No refunds are offered.</p><h5>3. Blacklisting</h5><p>We reserve the right to blacklist users without refund.</p><h5>4. Reverse Engineering</h5><p>Do not reverse engineer, leak, or modify our source code.</p><h5>5. Copyright</h5><p>Copying our Services or trademarks is not permitted.</p></div>`); openModal(); }
+function openPrivacy() { setBody(`<h3>Privacy Policy</h3><p class="msub">Last updated: March 2026</p><div class="tos-scroll"><p>Lumina Retail Group is committed to protecting your privacy.</p><h5>What we collect</h5><p>Discord username and ID when you log in. Profile information you provide.</p><h5>How we use it</h5><p>To provide login and dashboard features. We never sell your data.</p><h5>Storage</h5><p>Data is stored in your browser's localStorage.</p></div>`); openModal(); }
 function toast(msg, type = 'info') { const c = document.getElementById('toasts'); const t = document.createElement('div'); t.className = 'tst ' + type; t.textContent = msg; c.appendChild(t); requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show'))); setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2800); }
 
 // Load saved theme
