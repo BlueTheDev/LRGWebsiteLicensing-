@@ -350,18 +350,6 @@ nav {
   font-size: 0.85rem;
   color: var(--text);
 }
-.badge {
-  display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 500;
-}
-.badge-success {
-  background: rgba(34,197,94,0.1);
-  color: #4ade80;
-  border: 1px solid rgba(34,197,94,0.2);
-}
 .setting-item {
   display: flex;
   align-items: center;
@@ -501,20 +489,27 @@ footer { background: var(--surf); border-top: 1px solid var(--bdr); padding: 2re
 <div id="toasts"></div>
 
 <script>
-// Firebase Configuration
+// Firebase Configuration - REPLACE WITH YOUR OWN CONFIG
 const firebaseConfig = {
-  apiKey: "AIzaSyB3q6q8q8q8q8q8q8q8q8q8q8q8q8q8q8",
-  authDomain: "lrg-community-polls.firebaseapp.com",
-  databaseURL: "https://lrg-community-polls-default-rtdb.firebaseio.com",
-  projectId: "lrg-community-polls",
-  storageBucket: "lrg-community-polls.firebasestorage.app",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.firebasestorage.app",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+let database;
+try {
+  firebase.initializeApp(firebaseConfig);
+  database = firebase.database();
+  console.log("Firebase initialized");
+} catch (e) {
+  console.warn("Firebase not configured, using localStorage fallback");
+  database = null;
+}
 
 // Discord OAuth
 const DISCORD_CLIENT_ID = '1485946422942765056';
@@ -580,7 +575,7 @@ const PRODS = [
   { id:'restaurant', badge:'Bundle', name:'Restaurant Bundle', desc:'Complete restaurant setup.', feats:['Kitchen Equipment','Food Items','Serving Systems','Cooking Mechanics'], url:'https://www.roblox.com/game-pass/1631361299' }
 ];
 
-// Poll System with Firebase
+// Poll System
 const POLL_OPTIONS = [
   { id: 'nametag', label: 'Make a Nametag System' },
   { id: 'free_products', label: 'Make more free products' },
@@ -588,52 +583,56 @@ const POLL_OPTIONS = [
   { id: 'other', label: 'Something else (Tell us in discord by opening Ticket)' }
 ];
 
-let pollData = { counts: {}, total: 0, userVote: null };
+let pollCounts = { nametag: 0, free_products: 0, faster: 0, other: 0 };
+let userVote = null;
 let selectedPollOption = null;
 
 async function loadPollData() {
   if (!user) return;
   
-  // Get vote counts from Firebase
-  const countsRef = database.ref('poll_counts');
-  const snapshot = await countsRef.once('value');
-  const counts = snapshot.val() || {};
-  
-  // Get user's vote
-  const userVoteRef = database.ref(`user_votes/${user.uid}`);
-  const userSnapshot = await userVoteRef.once('value');
-  const userVote = userSnapshot.val();
-  
-  pollData = {
-    counts: counts,
-    total: Object.values(counts).reduce((a,b) => a + (b || 0), 0),
-    userVote: userVote
-  };
+  if (database) {
+    try {
+      const countsSnapshot = await database.ref('poll_counts').once('value');
+      const counts = countsSnapshot.val() || {};
+      pollCounts = { nametag: 0, free_products: 0, faster: 0, other: 0, ...counts };
+      
+      const userVoteSnapshot = await database.ref(`user_votes/${user.uid}`).once('value');
+      userVote = userVoteSnapshot.val();
+    } catch (e) {
+      console.error('Firebase load error:', e);
+    }
+  } else {
+    // localStorage fallback
+    const savedCounts = localStorage.getItem('poll_counts');
+    if (savedCounts) pollCounts = JSON.parse(savedCounts);
+    userVote = localStorage.getItem(`user_vote_${user.uid}`);
+  }
 }
 
 async function castVoteFirebase(optionId) {
   if (!user) { toast('Please sign in to vote', 'error'); return false; }
-  if (pollData.userVote) { toast('You have already voted', 'error'); return false; }
+  if (userVote) { toast('You have already voted', 'error'); return false; }
   
-  try {
-    // Update vote counts in Firebase
-    const countsRef = database.ref(`poll_counts/${optionId}`);
-    await countsRef.transaction(current => (current || 0) + 1);
-    
-    // Save user's vote
-    await database.ref(`user_votes/${user.uid}`).set(optionId);
-    
-    // Update local data
-    pollData.userVote = optionId;
-    pollData.counts[optionId] = (pollData.counts[optionId] || 0) + 1;
-    pollData.total++;
-    
+  if (database) {
+    try {
+      await database.ref(`poll_counts/${optionId}`).transaction(current => (current || 0) + 1);
+      await database.ref(`user_votes/${user.uid}`).set(optionId);
+      userVote = optionId;
+      pollCounts[optionId] = (pollCounts[optionId] || 0) + 1;
+      toast('Your vote has been recorded!', 'success');
+      return true;
+    } catch (error) {
+      toast('Failed to record vote.', 'error');
+      return false;
+    }
+  } else {
+    // localStorage fallback
+    pollCounts[optionId] = (pollCounts[optionId] || 0) + 1;
+    localStorage.setItem('poll_counts', JSON.stringify(pollCounts));
+    localStorage.setItem(`user_vote_${user.uid}`, optionId);
+    userVote = optionId;
     toast('Your vote has been recorded!', 'success');
     return true;
-  } catch (error) {
-    console.error('Vote error:', error);
-    toast('Failed to record vote. Please try again.', 'error');
-    return false;
   }
 }
 
@@ -667,6 +666,7 @@ function updNav() {
 function onAuth() { user ? openPanel() : go('login'); }
 
 function getUserProfile() { return JSON.parse(localStorage.getItem(UK) || '{}'); }
+function saveUserProfile(profile) { localStorage.setItem(UK, JSON.stringify(profile)); }
 
 function renderProds() {
   document.getElementById('prodGrid').innerHTML = PRODS.map(p => `<div class="p-card"><div class="p-label">${p.badge}</div><h3>${p.name}</h3><p class="p-desc">${p.desc}</p><ul class="p-feats">${p.feats.map(f=>`<li>${f}</li>`).join('')}</ul><button class="buy-btn" onclick="doBuy('${p.id}')">Purchase</button></div>`).join('');
@@ -674,10 +674,11 @@ function renderProds() {
 function doBuy(id) { if (!user) { go('login'); toast('Please sign in first','info'); return; } const p = PRODS.find(x=>x.id===id); if(p) { window.open(p.url,'_blank'); toast('Opening purchase page...','success'); } }
 
 let dashTabName = 'profile';
-function renderDash() {
+async function renderDash() {
   if (!user) { go('login'); return; }
   document.getElementById('dashProfile').innerHTML = `<div class="dash-av" style="background:${user.color||'#2563eb'}">${user.username[0]}</div><div><div class="dash-name">${user.username}</div><div class="dash-tag">#${user.disc||'0000'}</div></div>`;
-  loadPollData().then(() => renderDashTab(dashTabName));
+  await loadPollData();
+  renderDashTab(dashTabName);
 }
 function dashTab(name, btn) {
   dashTabName = name;
@@ -705,19 +706,16 @@ function renderDashTab(name) {
   } else if (name === 'licenses') {
     el.innerHTML = `<div class="licenses-section"><h3>Licenses</h3><div class="no-lic"><p>You don't own any products yet.</p><button class="btn-primary" onclick="go('products')">Browse Products</button></div></div>`;
   } else if (name === 'community') {
-    const hasVoted = pollData.userVote !== null;
-    const counts = pollData.counts;
-    const total = pollData.total;
-    
+    const total = Object.values(pollCounts).reduce((a,b) => a + b, 0);
     let pollHTML = `<div class="community-card"><h3>Community Poll</h3><div class="card-sub">What do you guys want to see at LRG?</div>`;
     POLL_OPTIONS.forEach(opt => {
-      const voteCount = counts[opt.id] || 0;
+      const voteCount = pollCounts[opt.id] || 0;
       const percentage = total > 0 ? Math.round((voteCount / total) * 100) : 0;
       pollHTML += `
         <div class="poll-option">
           <div class="poll-option-header">
             <label class="poll-option-label">
-              <input type="radio" name="poll" value="${opt.id}" ${hasVoted ? 'disabled' : ''} ${pollData.userVote === opt.id ? 'checked' : ''} onchange="selectedPollOption = '${opt.id}'">
+              <input type="radio" name="poll" value="${opt.id}" ${userVote ? 'disabled' : ''} ${userVote === opt.id ? 'checked' : ''} onchange="selectedPollOption = '${opt.id}'">
               <span>${opt.label}</span>
             </label>
             <span class="poll-percentage">${voteCount} votes (${percentage}%)</span>
@@ -726,10 +724,11 @@ function renderDashTab(name) {
         </div>
       `;
     });
-    if (!hasVoted) {
+    if (!userVote) {
       pollHTML += `<button class="poll-vote-btn" onclick="submitVote()">Submit Vote</button>`;
     } else {
-      pollHTML += `<div class="poll-result-status">✓ You voted for: ${POLL_OPTIONS.find(o => o.id === pollData.userVote)?.label || pollData.userVote}</div>`;
+      const votedOption = POLL_OPTIONS.find(o => o.id === userVote);
+      pollHTML += `<div class="poll-result-status">✓ You voted for: ${votedOption?.label || userVote}</div>`;
     }
     pollHTML += `<div class="poll-total-votes">${total} total votes cast</div></div>`;
     
