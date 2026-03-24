@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LRG</title>
+<title>LRG | Lumina Retail Group</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -213,12 +213,12 @@ nav {
 @media (max-width: 600px) { #page-login.active { grid-template-columns: 1fr; } .login-left { display: none; } }
 
 .login-left { background: #050810; position: relative; overflow: hidden; }
-.login-left-img { position: absolute; inset: 0; background-image: url('https://i.postimg.cc/zf1Rmcyr/licen-ong.png'); background-size: cover; background-position: center; opacity: 0.35; }
-.login-left-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,8,16,0.95) 0%, rgba(5,8,16,0.3) 60%); }
+.login-left-img { position: absolute; inset: 0; background-image: url('https://i.postimg.cc/ZRJLFRmG/2-png.png'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.65; transform: scale(1.02); filter: brightness(0.9) contrast(1.1); transition: transform 0.3s ease; }
+.login-left-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5,8,16,0.85) 0%, rgba(5,8,16,0.4) 100%); }
 .login-left-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 2.5rem; }
-.login-brand { font-size: 1.9rem; font-weight: 800; color: #fff; letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.6rem; }
+.login-brand { font-size: 2.2rem; font-weight: 800; color: #fff; letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.6rem; }
 .login-brand span { color: var(--blue); }
-.login-brand-sub { font-size: 0.88rem; color: rgba(255,255,255,0.4); max-width: 300px; line-height: 1.6; }
+.login-brand-sub { font-size: 0.9rem; color: rgba(255,255,255,0.65); max-width: 300px; line-height: 1.6; font-weight: 400; }
 
 .login-right { background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem 2rem; }
 .login-right-inner { width: 100%; max-width: 300px; }
@@ -328,189 +328,83 @@ footer { background: var(--surf); border-top: 1px solid var(--bdr); padding: 2.5
 <body>
 
 <div class="cookie-banner" id="cookieBanner">
-  <div class="cookie-text">
-    We use localStorage to keep you signed in. Your data is never sold.
-    <a onclick="openTOS();return false;">Terms</a> · <a onclick="openPrivacy();return false;">Privacy</a>
-  </div>
-  <div class="cookie-btns">
-    <button class="ck-btn ck-acc" onclick="acceptCookies()">Accept</button>
-    <button class="ck-btn ck-dec" onclick="declineCookies()">Decline</button>
-  </div>
+  <div class="cookie-text">We use localStorage & OAuth to keep you signed in. Your data is never sold.<a onclick="openTOS();return false;"> Terms</a> · <a onclick="openPrivacy();return false;"> Privacy</a></div>
+  <div class="cookie-btns"><button class="ck-btn ck-acc" onclick="acceptCookies()">Accept</button><button class="ck-btn ck-dec" onclick="declineCookies()">Decline</button></div>
 </div>
 
-<nav id="mainNav">
-  <a class="nav-logo" href="#" onclick="go('home');return false;">LRG</a>
-  <ul class="nav-links">
-    <li><a onclick="go('home')" id="nl-home" class="active">Home</a></li>
-    <li><a onclick="go('products')" id="nl-products">Products</a></li>
-    <li><a onclick="go('forum')" id="nl-forum">Forum</a></li>
-    <li><a onclick="requireAuth('dashboard')" id="nl-dashboard">Dashboard</a></li>
-  </ul>
-  <div class="nav-right">
-    <a class="btn-disc-nav" href="https://discord.gg/WCGA86DBg8" target="_blank">
-      <svg width="12" height="9" viewBox="0 0 24 18" fill="currentColor"><path d="M20.317 1.492a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 1.492a.07.07 0 00-.032.027C.533 5.968-.32 10.316.099 14.62a.082.082 0 00.031.056 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.029z"/></svg>
-      Discord
-    </a>
-    <button id="authBtn" onclick="onAuth()">Sign In</button>
-  </div>
-</nav>
+<nav id="mainNav"><a class="nav-logo" href="#" onclick="go('home');return false;">LRG</a><ul class="nav-links"><li><a onclick="go('home')" id="nl-home" class="active">Home</a></li><li><a onclick="go('products')" id="nl-products">Products</a></li><li><a onclick="go('forum')" id="nl-forum">Forum</a></li><li><a onclick="requireAuth('dashboard')" id="nl-dashboard">Dashboard</a></li></ul><div class="nav-right"><a class="btn-disc-nav" href="https://discord.gg/WCGA86DBg8" target="_blank"><svg width="12" height="9" viewBox="0 0 24 18" fill="currentColor"><path d="M20.317 1.492a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 1.492a.07.07 0 00-.032.027C.533 5.968-.32 10.316.099 14.62a.082.082 0 00.031.056 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.029z"/></svg> Discord</a><button id="authBtn" onclick="onAuth()">Sign In</button></div></nav>
 
-<div class="page active" id="page-home">
-  <div class="hero">
-    <div class="hero-inner">
-      <h1>Premium assets for<br><span>Roblox developers.</span></h1>
-      <p>Lumina Retail Group builds Roblox systems, models, and bundles. Drop them in and ship faster.</p>
-      <div class="hero-btns">
-        <button class="btn-primary" onclick="go('products')">View Products</button>
-        <a class="btn-outline" href="https://discord.gg/WCGA86DBg8" target="_blank">Discord</a>
-      </div>
-      <div class="hero-stats">
-        <div><div class="stat-n">2</div><div class="stat-l">Products</div></div>
-        <div><div class="stat-n">24/7</div><div class="stat-l">Support</div></div>
-        <div><div class="stat-n">100%</div><div class="stat-l">Plug & Play</div></div>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="page active" id="page-home"><div class="hero"><div class="hero-inner"><h1>Premium assets for<br><span>Roblox developers.</span></h1><p>Lumina Retail Group builds Roblox systems, models, and bundles. Drop them in and ship faster.</p><div class="hero-btns"><button class="btn-primary" onclick="go('products')">View Products</button><a class="btn-outline" href="https://discord.gg/WCGA86DBg8" target="_blank">Discord</a></div><div class="hero-stats"><div><div class="stat-n">2</div><div class="stat-l">Products</div></div><div><div class="stat-n">24/7</div><div class="stat-l">Support</div></div><div><div class="stat-n">100%</div><div class="stat-l">Plug & Play</div></div></div></div></div></div>
 
-<div class="page" id="page-products">
-  <div class="page-alt">
-    <div class="wrap">
-      <div class="s-hd">
-        <div class="section-label">Catalog</div>
-        <div class="section-title">Products</div>
-        <p class="section-sub">Plug-and-play assets built for Roblox.</p>
-      </div>
-      <div class="prod-grid" id="prodGrid"></div>
-    </div>
-  </div>
-</div>
+<div class="page" id="page-products"><div class="page-alt"><div class="wrap"><div class="s-hd"><div class="section-label">Catalog</div><div class="section-title">Products</div><p class="section-sub">Plug-and-play assets built for Roblox.</p></div><div class="prod-grid" id="prodGrid"></div></div></div></div>
 
-<div class="page" id="page-forum">
-  <div class="wrap">
-    <div class="forum-top">
-      <div>
-        <div class="section-label">Community</div>
-        <div class="section-title">Forum</div>
-        <p class="section-sub">Support, bugs, ideas.</p>
-      </div>
-      <button class="btn-primary" id="newPostBtn" onclick="openNewPost()" style="display:none">New Post</button>
-    </div>
-    <div id="forumEl"></div>
-  </div>
-</div>
+<div class="page" id="page-forum"><div class="wrap"><div class="forum-top"><div><div class="section-label">Community</div><div class="section-title">Forum</div><p class="section-sub">Support, bugs, ideas.</p></div><button class="btn-primary" id="newPostBtn" onclick="openNewPost()" style="display:none">New Post</button></div><div id="forumEl"></div></div></div>
 
-<div class="page" id="page-dashboard">
-  <div class="wrap">
-    <div class="s-hd">
-      <div class="section-label">My Account</div>
-      <div class="section-title">Dashboard</div>
-      <p class="section-sub">Manage licenses and downloads.</p>
-    </div>
-    <div class="dash-grid">
-      <div class="dash-sidebar">
-        <div class="dash-profile" id="dashProfile"></div>
-        <div class="dash-nav">
-          <button class="dash-nav-btn active" onclick="dashTab('licenses',this)">Licenses</button>
-          <button class="dash-nav-btn" onclick="dashTab('downloads',this)">Downloads</button>
-          <button class="dash-nav-btn" onclick="dashTab('settings',this)">Settings</button>
-        </div>
-      </div>
-      <div id="dashMain"></div>
-    </div>
-  </div>
-</div>
+<div class="page" id="page-dashboard"><div class="wrap"><div class="s-hd"><div class="section-label">My Account</div><div class="section-title">Dashboard</div><p class="section-sub">Manage licenses and downloads.</p></div><div class="dash-grid"><div class="dash-sidebar"><div class="dash-profile" id="dashProfile"></div><div class="dash-nav"><button class="dash-nav-btn active" onclick="dashTab('licenses',this)">Licenses</button><button class="dash-nav-btn" onclick="dashTab('downloads',this)">Downloads</button><button class="dash-nav-btn" onclick="dashTab('settings',this)">Settings</button></div></div><div id="dashMain"></div></div></div></div>
 
-<div class="page" id="page-login">
-  <div class="login-left">
-    <div class="login-left-img"></div>
-    <div class="login-left-overlay"></div>
-    <div class="login-left-content">
-      <div class="login-brand">Lumina<span>RG</span></div>
-      <div class="login-brand-sub">We provide cheap & high quality assets for your Roblox Store.</div>
-    </div>
-  </div>
-  <div class="login-right">
-    <div class="login-right-inner">
-      <h2>Welcome</h2>
-      <p>Login to access your Dashboard</p>
-      <button class="btn-disc-login" onclick="openDiscPop()">
-        <svg width="18" height="14" viewBox="0 0 24 18" fill="currentColor"><path d="M20.317 1.492a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 1.492a.07.07 0 00-.032.027C.533 5.968-.32 10.316.099 14.62a.082.082 0 00.031.056 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.029z"/></svg>
-        Login with Discord
-      </button>
-      <button class="btn-back-login" onclick="go('home')">← Back to Website</button>
-      <div class="login-terms">
-        By logging in you agree to our
-        <span onclick="openTOS()">Terms of Use</span> and
-        <span onclick="openPrivacy()">Privacy Policy</span>.
-      </div>
-    </div>
-  </div>
-</div>
+<div class="page" id="page-login"><div class="login-left"><div class="login-left-img"></div><div class="login-left-overlay"></div><div class="login-left-content"><div class="login-brand">LRG</div><div class="login-brand-sub">High-quality assets for your Roblox journey — instant access, lifetime updates.</div></div></div><div class="login-right"><div class="login-right-inner"><h2>Welcome</h2><p>Login to access your Dashboard</p><button class="btn-disc-login" onclick="startDiscordOAuth()"><svg width="18" height="14" viewBox="0 0 24 18" fill="currentColor"><path d="M20.317 1.492a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 1.492a.07.07 0 00-.032.027C.533 5.968-.32 10.316.099 14.62a.082.082 0 00.031.056 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.029z"/></svg> Login with Discord</button><button class="btn-back-login" onclick="go('home')">← Back to Website</button><div class="login-terms">By logging in you agree to our <span onclick="openTOS()">Terms</span> and <span onclick="openPrivacy()">Privacy</span>.</div></div></div></div>
 
-<footer id="mainFooter">
-  <div class="foot">
-    <div class="foot-top">
-      <div>
-        <div class="foot-logo">LRG</div>
-        <p class="foot-blurb">Premium Roblox products built for developers.</p>
-        <div class="foot-soc">
-          <a href="https://discord.gg/WCGA86DBg8" target="_blank">
-            <svg width="12" height="9" viewBox="0 0 24 18" fill="currentColor"><path d="M20.317 1.492a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 1.492a.07.07 0 00-.032.027C.533 5.968-.32 10.316.099 14.62a.082.082 0 00.031.056 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.029z"/></svg>
-          </a>
-        </div>
-      </div>
-      <div class="foot-col"><h6>Products</h6><ul><li><a onclick="go('products')">Basic Bundle</a></li><li><a onclick="go('products')">Restaurant Bundle</a></li></ul></div>
-      <div class="foot-col"><h6>Community</h6><ul><li><a onclick="go('forum')">Forum</a></li><li><a href="https://discord.gg/WCGA86DBg8" target="_blank">Discord</a></li></ul></div>
-      <div class="foot-col"><h6>Legal</h6><ul><li><a onclick="openTOS()">Terms</a></li><li><a onclick="openPrivacy()">Privacy</a></li></ul></div>
-    </div>
-    <div class="foot-bot">
-      <div class="foot-copy">© 2026 Lumina Retail Group</div>
-      <div class="foot-lnks"><a onclick="openTOS()">Terms</a><a onclick="openPrivacy()">Privacy</a><a href="https://discord.gg/WCGA86DBg8" target="_blank">Support</a></div>
-    </div>
-  </div>
-</footer>
+<footer id="mainFooter"><div class="foot"><div class="foot-top"><div><div class="foot-logo">LRG</div><p class="foot-blurb">Premium Roblox products built for developers.</p><div class="foot-soc"><a href="https://discord.gg/WCGA86DBg8" target="_blank"><svg width="12" height="9" viewBox="0 0 24 18" fill="currentColor"><path d="M20.317 1.492a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 1.492a.07.07 0 00-.032.027C.533 5.968-.32 10.316.099 14.62a.082.082 0 00.031.056 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.029z"/></svg></a></div></div><div class="foot-col"><h6>Products</h6><ul><li><a onclick="go('products')">Basic Bundle</a></li><li><a onclick="go('products')">Restaurant Bundle</a></li></ul></div><div class="foot-col"><h6>Community</h6><ul><li><a onclick="go('forum')">Forum</a></li><li><a href="https://discord.gg/WCGA86DBg8" target="_blank">Discord</a></li></ul></div><div class="foot-col"><h6>Legal</h6><ul><li><a onclick="openTOS()">Terms</a></li><li><a onclick="openPrivacy()">Privacy</a></li></ul></div></div><div class="foot-bot"><div class="foot-copy">© 2026 Lumina Retail Group</div><div class="foot-lnks"><a onclick="openTOS()">Terms</a><a onclick="openPrivacy()">Privacy</a><a href="https://discord.gg/WCGA86DBg8" target="_blank">Support</a></div></div></div></footer>
 
-<div class="overlay" id="ov" onclick="ovClick(event)">
-  <div class="modal" id="modal">
-    <button class="modal-x" onclick="closeModal()">✕</button>
-    <div id="mbody"></div>
-  </div>
-</div>
-
-<div id="discPop">
-  <div class="disc-win">
-    <div class="disc-head">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="#5865f2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.001.018.01.035.027.046a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029z"/></svg>
-      <div><div class="disc-head-title">Sign in with Discord</div><div class="disc-head-sub">discord.com</div></div>
-    </div>
-    <div class="disc-body">
-      <div class="disc-app">
-        <div class="disc-app-icon">LRG</div>
-        <div><div class="disc-app-name">Lumina Retail Group</div><div class="disc-app-sub">wants to access your account</div></div>
-      </div>
-      <p>Select an account:</p>
-      <div id="discAccs"></div>
-      <button class="disc-guest" onclick="loginGuest()">Continue as Guest (Demo)</button>
-    </div>
-  </div>
-</div>
-
+<div class="overlay" id="ov" onclick="ovClick(event)"><div class="modal" id="modal"><button class="modal-x" onclick="closeModal()">✕</button><div id="mbody"></div></div></div>
+<div id="discPop"><div class="disc-win"><div class="disc-head"><svg width="28" height="28" viewBox="0 0 24 24" fill="#5865f2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.001.018.01.035.027.046a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029z"/></svg><div><div class="disc-head-title">Sign in with Discord</div><div class="disc-head-sub">discord.com</div></div></div><div class="disc-body"><div class="disc-app"><div class="disc-app-icon">LRG</div><div><div class="disc-app-name">Lumina Retail Group</div><div class="disc-app-sub">wants to access your account</div></div></div><p>Redirecting to Discord...</p></div></div></div>
 <div id="toasts"></div>
 
 <script>
 const SK='lrg_s3', PK='lrg_p3', CK='lrg_c3', LK='lrg_l3';
 let user = null;
 
+// Discord OAuth Configuration (REAL REDIRECT URI)
+const DISCORD_CLIENT_ID = '1351154432145293422';
+const DISCORD_REDIRECT_URI = encodeURIComponent('https://lrg-network.github.io/auth/');
+const DISCORD_OAUTH_URL = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${DISCORD_REDIRECT_URI}&scope=identify`;
+
+function startDiscordOAuth() {
+  // Store current state to localStorage to detect return
+  localStorage.setItem('oauth_pending', 'true');
+  window.location.href = DISCORD_OAUTH_URL;
+}
+
+// Handle OAuth callback (hash fragment)
+function handleDiscordCallback() {
+  const hash = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  const accessToken = params.get('access_token');
+  if (accessToken && localStorage.getItem('oauth_pending') === 'true') {
+    localStorage.removeItem('oauth_pending');
+    fetchDiscordUser(accessToken);
+    window.history.replaceState(null, null, window.location.pathname);
+  }
+}
+
+async function fetchDiscordUser(token) {
+  try {
+    const res = await fetch('https://discord.com/api/users/@me', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Discord API error');
+    const data = await res.json();
+    const discordUser = {
+      uid: data.id,
+      username: data.username,
+      disc: data.discriminator === '0' ? '0' : data.discriminator,
+      color: `#${(parseInt(data.id.slice(0,6), 16) % 0xFFFFFF).toString(16).padStart(6,'0')}`,
+      avatar: data.avatar,
+      accessToken: token
+    };
+    saveSess(discordUser);
+    ensureDemoLics();
+    toast(`Welcome, ${discordUser.username}!`, 'success');
+    go('dashboard');
+  } catch (err) {
+    console.error(err);
+    toast('Discord login failed. Try guest mode.', 'error');
+  }
+}
+
 const PRODS = [
   { id:'basic', badge:'Starter', name:'Basic Bundle', desc:'Everything a new developer needs to get started. Full documentation included.', feats:['All Basic Assets','Full Documentation','Priority Support','Lifetime Updates'], url:'https://www.roblox.com/game-pass/1631741299' },
   { id:'restaurant', badge:'Bundle', name:'Restaurant Bundle', desc:'Complete restaurant setup — kitchen, food items, and serving systems ready to drop in.', feats:['Kitchen Equipment','Food Items','Serving Systems','Cooking Mechanics'], url:'https://www.roblox.com/game-pass/1631361299' }
-];
-
-const DEMO_ACCS = [
-  { id:'u_blue', username:'Blue', disc:'0001', color:'#2563eb' },
-  { id:'u_ch4ws', username:'Ch4ws', disc:'1234', color:'#7c3aed' },
-  { id:'u_demo', username:'DevUser', disc:'9999', color:'#0e7490' },
 ];
 
 function showCookieBanner() { if (!localStorage.getItem(CK)) document.getElementById('cookieBanner').classList.add('show'); }
@@ -550,30 +444,10 @@ function updNav() {
 
 function onAuth() { user ? openPanel() : go('login'); }
 
-function openDiscPop() {
-  document.getElementById('discAccs').innerHTML = DEMO_ACCS.map(a =>
-    `<button class="disc-acc-btn" onclick="loginAcc('${a.id}')">
-      <div class="disc-acc-av" style="background:${a.color}">${a.username[0]}</div>
-      <div><div class="disc-acc-name">${a.username}</div><div class="disc-acc-tag">#${a.disc}</div></div>
-    </button>`
-  ).join('');
-  document.getElementById('discPop').classList.add('open');
-}
-document.getElementById('discPop').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
-
-function loginAcc(uid) {
-  const a = DEMO_ACCS.find(x => x.id===uid);
-  if (!a) return;
-  document.getElementById('discPop').classList.remove('open');
-  saveSess({ uid:a.id, username:a.username, disc:a.disc, color:a.color });
-  ensureDemoLics();
-  toast('Welcome, '+a.username+'!', 'success');
-  go('dashboard');
-}
 function loginGuest() {
-  document.getElementById('discPop').classList.remove('open');
-  saveSess({ uid:'guest_'+Date.now(), username:'Guest', disc:'0000', color:'#374151' });
-  toast('Logged in as guest', 'info');
+  const guestId = 'guest_'+Date.now();
+  saveSess({ uid:guestId, username:'Guest', disc:'0000', color:'#374151' });
+  toast('Logged in as guest (limited features)', 'info');
   go('dashboard');
 }
 
@@ -582,11 +456,11 @@ function setLics(l) { localStorage.setItem(LK,JSON.stringify(l)); }
 function getUserLics() { if (!user) return []; return getLics().filter(l => l.uid===user.uid); }
 
 function ensureDemoLics() {
-  if (!user || user.uid !== 'u_blue') return;
+  if (!user || (user.uid !== 'u_blue' && user.uid !== '1351154432145293422' && !user.uid.startsWith('guest_'))) return;
   const all = getLics();
   ['basic','restaurant'].forEach(pid => {
-    if (!all.find(l=>l.uid==='u_blue'&&l.productId===pid))
-      all.push({id:'lic_'+pid+'_'+Date.now(), uid:'u_blue', productId:pid, status:'active', purchased:Date.now()-86400000*5});
+    if (!all.find(l=>l.uid===user.uid && l.productId===pid))
+      all.push({id:'lic_'+pid+'_'+Date.now(), uid:user.uid, productId:pid, status:'active', purchased:Date.now()-86400000*5});
   });
   setLics(all);
 }
@@ -595,13 +469,7 @@ function renderProds() {
   const lics = getLics();
   document.getElementById('prodGrid').innerHTML = PRODS.map(p => {
     const owned = user && lics.some(l=>l.productId===p.id&&l.uid===user.uid&&l.status==='active');
-    return `<div class="p-card">
-      <div class="p-label">${p.badge}</div>
-      <h3>${p.name}</h3>
-      <p class="p-desc">${p.desc}</p>
-      <ul class="p-feats">${p.feats.map(f=>`<li>${f}</li>`).join('')}</ul>
-      <button class="buy-btn${owned?' owned':''}" onclick="${owned?`toast('You already own this','info')`:`doBuy('${p.id}')`}">${owned?'✓ Owned':'Purchase'}</button>
-    </div>`;
+    return `<div class="p-card"><div class="p-label">${p.badge}</div><h3>${p.name}</h3><p class="p-desc">${p.desc}</p><ul class="p-feats">${p.feats.map(f=>`<li>${f}</li>`).join('')}</ul><button class="buy-btn${owned?' owned':''}" onclick="${owned?`toast('You already own this','info')`:`doBuy('${p.id}')`}">${owned?'✓ Owned':'Purchase'}</button></div>`;
   }).join('');
 }
 function doBuy(id) {
@@ -613,9 +481,7 @@ function doBuy(id) {
 let dashTabName = 'licenses';
 function renderDash() {
   if (!user) { go('login'); return; }
-  document.getElementById('dashProfile').innerHTML = `
-    <div class="dash-av" style="background:${user.color||'#2563eb'}">${user.username[0]}</div>
-    <div><div class="dash-name">${user.username}</div><div class="dash-tag">#${user.disc||'0000'}</div></div>`;
+  document.getElementById('dashProfile').innerHTML = `<div class="dash-av" style="background:${user.color||'#2563eb'}">${user.username[0]}</div><div><div class="dash-name">${user.username}</div><div class="dash-tag">#${user.disc||'0000'}</div></div>`;
   renderDashTab(dashTabName);
 }
 function dashTab(name, btn) {
@@ -628,41 +494,15 @@ function renderDashTab(name) {
   const el = document.getElementById('dashMain');
   const lics = getUserLics();
   if (name==='licenses') {
-    el.innerHTML = `<div class="dash-section"><h3>Your Licenses</h3>${!lics.length
-      ? `<div class="no-lic"><p>You don't own any products yet.</p><button class="btn-primary" onclick="go('products')">Browse Products</button></div>`
-      : lics.map(l=>{
-          const p=PRODS.find(x=>x.id===l.productId)||{name:l.productId};
-          const d=new Date(l.purchased).toLocaleDateString('en-GB');
-          return `<div class="lic-card">
-            <div><div class="lic-name">${p.name}</div><div class="lic-id">ID: ${l.id} · ${d}</div></div>
-            <div style="display:flex;align-items:center;gap:.7rem;flex-wrap:wrap">
-              <span class="lic-status ${l.status}">${l.status.charAt(0).toUpperCase()+l.status.slice(1)}</span>
-              <button class="lic-dl-btn" onclick="dlProduct('${l.productId}')" ${l.status!=='active'?'disabled':''}>↓ Download</button>
-            </div>
-          </div>`;
-        }).join('')
-    }</div>`;
+    el.innerHTML = `<div class="dash-section"><h3>Your Licenses</h3>${!lics.length ? `<div class="no-lic"><p>You don't own any products yet.</p><button class="btn-primary" onclick="go('products')">Browse Products</button></div>` : lics.map(l=>{const p=PRODS.find(x=>x.id===l.productId)||{name:l.productId};const d=new Date(l.purchased).toLocaleDateString('en-GB');return `<div class="lic-card"><div><div class="lic-name">${p.name}</div><div class="lic-id">ID: ${l.id} · ${d}</div></div><div style="display:flex;align-items:center;gap:.7rem;flex-wrap:wrap"><span class="lic-status ${l.status}">${l.status.charAt(0).toUpperCase()+l.status.slice(1)}</span><button class="lic-dl-btn" onclick="dlProduct('${l.productId}')" ${l.status!=='active'?'disabled':''}>↓ Download</button></div></div>`;}).join('')}</div>`;
   } else if (name==='downloads') {
     const active = lics.filter(l=>l.status==='active');
-    el.innerHTML = `<div class="dash-section"><h3>Downloads</h3>${!active.length
-      ? `<div class="no-lic"><p>No active licenses.</p><button class="btn-primary" onclick="go('products')">Browse Products</button></div>`
-      : active.map(l=>{const p=PRODS.find(x=>x.id===l.productId)||{name:l.productId};return`<div class="lic-card"><div><div class="lic-name">${p.name}</div><div class="lic-id">Ready to download</div></div><button class="lic-dl-btn" onclick="dlProduct('${l.productId}')">↓ Download .rbxm</button></div>`;}).join('')
-    }</div>`;
+    el.innerHTML = `<div class="dash-section"><h3>Downloads</h3>${!active.length ? `<div class="no-lic"><p>No active licenses.</p><button class="btn-primary" onclick="go('products')">Browse Products</button></div>` : active.map(l=>{const p=PRODS.find(x=>x.id===l.productId)||{name:l.productId};return`<div class="lic-card"><div><div class="lic-name">${p.name}</div><div class="lic-id">Ready to download</div></div><button class="lic-dl-btn" onclick="dlProduct('${l.productId}')">↓ Download .rbxm</button></div>`;}).join('')}</div>`;
   } else {
-    el.innerHTML = `<div class="dash-section"><h3>Settings</h3>
-      <div class="u-strip"><div class="u-av" style="background:${user.color||'#2563eb'}">${user.username[0]}</div>
-      <div><div class="u-name">${user.username}#${user.disc||'0000'}</div><div class="u-email">Discord</div></div></div>
-      <div class="m-act-row">
-        <button class="m-act" onclick="openTOS()">Terms of Use</button>
-        <button class="m-act" onclick="openPrivacy()">Privacy Policy</button>
-        <button class="m-act danger" onclick="doLogout()">Sign Out</button>
-      </div>
-    </div>`;
+    el.innerHTML = `<div class="dash-section"><h3>Settings</h3><div class="u-strip"><div class="u-av" style="background:${user.color||'#2563eb'}">${user.username[0]}</div><div><div class="u-name">${user.username}#${user.disc||'0000'}</div><div class="u-email">${user.uid?.startsWith('guest') ? 'Guest Mode' : 'Discord Connected'}</div></div></div><div class="m-act-row"><button class="m-act" onclick="openTOS()">Terms of Use</button><button class="m-act" onclick="openPrivacy()">Privacy Policy</button><button class="m-act danger" onclick="doLogout()">Sign Out</button></div></div>`;
   }
 }
-function dlProduct(id) {
-  toast('Connect a backend for real download links', 'info');
-}
+function dlProduct(id) { toast('Download links: join Discord for full assets', 'info'); }
 
 function getPosts() { return JSON.parse(localStorage.getItem(PK)||'[]'); }
 function setPosts(p) { localStorage.setItem(PK,JSON.stringify(p)); }
@@ -670,24 +510,13 @@ function ago(ts) { const d=Date.now()-ts; if(d<60000)return'just now'; if(d<3600
 function catLabel(c) { return{discussion:'Discussion',support:'Support',bug:'Bug Report',feedback:'Feedback'}[c]||'Discussion'; }
 
 function renderForum() {
-  const nb=document.getElementById('newPostBtn');
-  if (nb) nb.style.display=user?'flex':'none';
+  const nb=document.getElementById('newPostBtn'); if (nb) nb.style.display=user?'flex':'none';
   const el=document.getElementById('forumEl');
   if (!el) return;
   if (!user) { el.innerHTML=`<div class="empty"><h3>Sign in to view the forum</h3><p>You need to be logged in.</p><button class="btn-primary" onclick="go('login')">Sign In</button></div>`; return; }
   const posts=getPosts().sort((a,b)=>b.ts-a.ts);
   if (!posts.length) { el.innerHTML=`<div class="empty"><h3>No posts yet</h3><p>Be the first to post.</p><button class="btn-outline" onclick="openNewPost()">Create Post</button></div>`; return; }
-  el.innerHTML=posts.map((p,i)=>`
-    <div class="f-card" style="animation:fi .3s ${i*0.04}s both">
-      ${user.uid===p.uid?`<button class="f-del" onclick="delPost('${p.id}')">Delete</button>`:''}
-      <div class="f-cat cat-${p.cat}">${catLabel(p.cat)}</div>
-      <h4>${p.title}</h4>
-      <p class="f-body">${p.body}</p>
-      <div class="f-meta">
-        <div class="f-av" style="background:${p.color||'#2563eb'}">${p.author[0].toUpperCase()}</div>
-        <div><div class="f-name">${p.author}</div><div class="f-time">${ago(p.ts)}</div></div>
-      </div>
-    </div>`).join('');
+  el.innerHTML=posts.map((p,i)=>`<div class="f-card" style="animation:fi .3s ${i*0.04}s both">${user.uid===p.uid?`<button class="f-del" onclick="delPost('${p.id}')">Delete</button>`:''}<div class="f-cat cat-${p.cat}">${catLabel(p.cat)}</div><h4>${p.title}</h4><p class="f-body">${p.body}</p><div class="f-meta"><div class="f-av" style="background:${p.color||'#2563eb'}">${p.author[0].toUpperCase()}</div><div><div class="f-name">${p.author}</div><div class="f-time">${ago(p.ts)}</div></div></div></div>`).join('');
 }
 function delPost(id) { setPosts(getPosts().filter(p=>p.id!==id)); toast('Deleted','info'); renderForum(); }
 
@@ -696,79 +525,20 @@ function openModal() { document.getElementById('ov').classList.add('open'); docu
 function closeModal() { document.getElementById('ov').classList.remove('open'); document.body.style.overflow=''; }
 function ovClick(e) { if(e.target===document.getElementById('ov')) closeModal(); }
 
-function openPanel() {
-  setBody(`<h3>Account</h3>
-    <div class="u-strip">
-      <div class="u-av" style="background:${user.color||'#2563eb'}">${user.username[0]}</div>
-      <div><div class="u-name">${user.username}#${user.disc||'0000'}</div><div class="u-email">Discord</div></div>
-    </div>
-    <div class="m-act-row">
-      <button class="m-act" onclick="requireAuth('dashboard');closeModal()">Dashboard</button>
-      <button class="m-act danger" onclick="doLogout()">Sign Out</button>
-    </div>`);
-  openModal();
-}
-function openNewPost() {
-  if (!user) { go('login'); return; }
-  setBody(`<h3>New Post</h3><p class="msub">Share with the community.</p>
-    <div class="fg"><label class="fl">Title</label><input class="fi" id="pt" type="text" placeholder="Title"></div>
-    <div class="fg"><label class="fl">Category</label>
-      <select class="fi" id="pc"><option value="discussion">Discussion</option><option value="support">Support</option><option value="bug">Bug Report</option><option value="feedback">Feedback</option></select>
-    </div>
-    <div class="fg"><label class="fl">Content</label><textarea class="fi" id="pb" placeholder="Write something..."></textarea></div>
-    <div class="m-btns"><button class="mb-p" onclick="submitPost()">Post</button><button class="mb-s" onclick="closeModal()">Cancel</button></div>`);
-  openModal();
-}
-function submitPost() {
-  const title=document.getElementById('pt')?.value.trim();
-  const cat=document.getElementById('pc')?.value;
-  const body=document.getElementById('pb')?.value.trim();
-  if (!title||!body) return toast('Fill in all fields','error');
-  if (title.length<5) return toast('Title too short','error');
-  const posts=getPosts();
-  posts.push({id:'p'+Date.now(),title,cat,body,uid:user.uid,author:user.username,color:user.color||'#2563eb',ts:Date.now()});
-  setPosts(posts);closeModal();toast('Posted!','success');renderForum();
-}
+function openPanel() { setBody(`<h3>Account</h3><div class="u-strip"><div class="u-av" style="background:${user.color||'#2563eb'}">${user.username[0]}</div><div><div class="u-name">${user.username}#${user.disc||'0000'}</div><div class="u-email">${user.uid?.startsWith('guest') ? 'Guest' : 'Discord'}</div></div></div><div class="m-act-row"><button class="m-act" onclick="requireAuth('dashboard');closeModal()">Dashboard</button><button class="m-act danger" onclick="doLogout()">Sign Out</button></div>`); openModal(); }
+function openNewPost() { if (!user) { go('login'); return; } setBody(`<h3>New Post</h3><p class="msub">Share with the community.</p><div class="fg"><label class="fl">Title</label><input class="fi" id="pt" type="text" placeholder="Title"></div><div class="fg"><label class="fl">Category</label><select class="fi" id="pc"><option value="discussion">Discussion</option><option value="support">Support</option><option value="bug">Bug Report</option><option value="feedback">Feedback</option></select></div><div class="fg"><label class="fl">Content</label><textarea class="fi" id="pb" placeholder="Write something..."></textarea></div><div class="m-btns"><button class="mb-p" onclick="submitPost()">Post</button><button class="mb-s" onclick="closeModal()">Cancel</button></div>`); openModal(); }
+function submitPost() { const title=document.getElementById('pt')?.value.trim(); const cat=document.getElementById('pc')?.value; const body=document.getElementById('pb')?.value.trim(); if (!title||!body) return toast('Fill in all fields','error'); if (title.length<5) return toast('Title too short','error'); const posts=getPosts(); posts.push({id:'p'+Date.now(),title,cat,body,uid:user.uid,author:user.username,color:user.color||'#2563eb',ts:Date.now()}); setPosts(posts);closeModal();toast('Posted!','success');renderForum(); }
 function doLogout() { clearSess();closeModal();toast('Signed out','info');go('home'); }
 
-function openTOS() {
-  setBody(`<h3>Terms of Use</h3><p class="msub">Effective 21/08/2025</p>
-    <div class="tos-scroll">
-      <p>By using our Services you agree to follow these terms.</p>
-      <h5>1. Account Responsibility</h5><p>You are solely responsible for your account. We will not transfer Services to new accounts.</p>
-      <h5>2. Refunds</h5><p>No refunds are offered.</p>
-      <h5>3. Blacklisting</h5><p>We reserve the right to blacklist users without refund.</p>
-      <h5>4. Reverse Engineering</h5><p>Do not reverse engineer, leak, or modify our source code.</p>
-      <h5>5. Unauthorized Changes</h5><p>Modifying our code or models is prohibited.</p>
-      <h5>6. Copyright</h5><p>Copying our Services or trademarks is not permitted.</p>
-      <h5>7. Updates</h5><p>We may update Terms at any time without notice.</p>
-    </div>`);
-  openModal();
-}
-function openPrivacy() {
-  setBody(`<h3>Privacy Policy</h3><p class="msub">Last updated: March 2026</p>
-    <div class="tos-scroll">
-      <p>Lumina Retail Group is committed to protecting your privacy.</p>
-      <h5>What we collect</h5><p>Username from Discord when you log in. Forum posts you create.</p>
-      <h5>How we use it</h5><p>To provide login, forum, and dashboard features. We <strong>never sell</strong> your data.</p>
-      <h5>Storage</h5><p>Data is stored in your browser's localStorage. Decline cookies to prevent this.</p>
-      <h5>Your rights</h5><p>Request deletion at any time via our Discord server.</p>
-      <h5>Age</h5><p>Services intended for users 13 and older.</p>
-    </div>`);
-  openModal();
-}
+function openTOS() { setBody(`<h3>Terms of Use</h3><p class="msub">Effective 21/08/2025</p><div class="tos-scroll"><p>By using our Services you agree to follow these terms.</p><h5>1. Account Responsibility</h5><p>You are solely responsible for your account.</p><h5>2. Refunds</h5><p>No refunds are offered.</p><h5>3. Blacklisting</h5><p>We reserve the right to blacklist users without refund.</p><h5>4. Reverse Engineering</h5><p>Do not reverse engineer, leak, or modify our source code.</p><h5>5. Unauthorized Changes</h5><p>Modifying our code or models is prohibited.</p><h5>6. Copyright</h5><p>Copying our Services or trademarks is not permitted.</p><h5>7. Updates</h5><p>We may update Terms at any time without notice.</p></div>`); openModal(); }
+function openPrivacy() { setBody(`<h3>Privacy Policy</h3><p class="msub">Last updated: March 2026</p><div class="tos-scroll"><p>Lumina Retail Group is committed to protecting your privacy.</p><h5>What we collect</h5><p>Username from Discord when you log in. Forum posts you create.</p><h5>How we use it</h5><p>To provide login, forum, and dashboard features. We <strong>never sell</strong> your data.</p><h5>Storage</h5><p>Data is stored in your browser's localStorage. Decline cookies to prevent this.</p><h5>Your rights</h5><p>Request deletion at any time via our Discord server.</p><h5>Age</h5><p>Services intended for users 13 and older.</p></div>`); openModal(); }
 
-function toast(msg, type='info') {
-  const c=document.getElementById('toasts');
-  const t=document.createElement('div');
-  t.className='tst '+type; t.textContent=msg;
-  c.appendChild(t);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
-  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},2800);
-}
+function toast(msg, type='info') { const c=document.getElementById('toasts'); const t=document.createElement('div'); t.className='tst '+type; t.textContent=msg; c.appendChild(t); requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show'))); setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},2800); }
 
 loadSess();
 showCookieBanner();
+handleDiscordCallback();
+if (!user && localStorage.getItem('oauth_pending') === 'true') localStorage.removeItem('oauth_pending');
 </script>
 </body>
 </html>
